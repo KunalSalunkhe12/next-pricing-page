@@ -326,9 +326,11 @@ function PricingCard({
   return (
     <Card
       className={`rounded-[20px] bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] flex flex-col text-white shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:-translate-y-2 
-        ${tier.plan === "free" ? "border-none" : "border-[#79A6FF]"} ${
-        tier.popular && "border-[2px]"
-      } h-full`}
+        ${
+          tier.plan === "free"
+            ? "border-none"
+            : "border-[#2F76FF] border-opacity-50"
+        } ${tier.popular && "border-[2px] border-opacity-100"} h-full`}
     >
       <CardHeader className="flex-grow-0">
         {tier.popular && (

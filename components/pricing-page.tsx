@@ -232,71 +232,78 @@ export default function PricingPage(): JSX.Element {
         >
           Choose the perfect plan for your coaching needs
         </motion.p>
-        <Tabs defaultValue="monthly" className="mb-12 relative">
-          <span className="bg-[#2F76FF] text-white text-xs font-semibold rounded-lg p-1.5 absolute right-[5%] top-[-40px] md:right-[13%] md:top-[-32px] lg:right-[24%] xl:right-[29%] ">
-            {averageSavings.toFixed(0)}% off
-          </span>
-          <TabsList className="bg-[#232b3e] grid w-full grid-cols-2 max-w-[400px] mx-auto my-10 h-fit rounded-full overflow-hidden">
-            <TabsTrigger
-              value="monthly"
-              onClick={() => setBillingPeriod("monthly")}
-              className="p-2 rounded-full data-[state=active]:bg-[#2F76FF] data-[state=active]:text-white transition-all duration-300 ease-in-out"
-            >
-              Monthly
-            </TabsTrigger>
-            <TabsTrigger
-              value="annual"
-              onClick={() => setBillingPeriod("annual")}
-              className="p-2 rounded-full data-[state=active]:bg-[#2F76FF] data-[state=active]:text-white transition-all duration-300 ease-in-out"
-            >
-              Yearly
-            </TabsTrigger>
-          </TabsList>
-          <TabsContent value="monthly">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {tiers.map((tier, index) => (
-                <motion.div
-                  key={tier.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <PricingCard
-                    tier={tier}
-                    originalPrice={tier.monthlyPrice.original}
-                    price={tier.monthlyPrice.discounted}
-                    billingPeriod="month"
-                    onSubscribe={handleSubscribe}
-                    isLoading={isLoading}
-                    strikethrough={tier.monthlyPrice.strikethrough}
-                  />
-                </motion.div>
-              ))}
-            </div>
-          </TabsContent>
-          <TabsContent value="annual">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {tiers.map((tier, index) => (
-                <motion.div
-                  key={tier.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <PricingCard
-                    tier={tier}
-                    originalPrice={tier.annualPrice.original}
-                    price={tier.annualPrice.discounted}
-                    billingPeriod="year"
-                    onSubscribe={handleSubscribe}
-                    isLoading={isLoading}
-                    strikethrough={tier.annualPrice.strikethrough}
-                  />
-                </motion.div>
-              ))}
-            </div>
-          </TabsContent>
-        </Tabs>
+        <motion.div
+          className="text-xl text-center mb-12 text-gray-400 font-light"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <Tabs defaultValue="monthly" className="mb-12 relative">
+            <span className="bg-yellow-400 text-gray-800 text-xs font-bold rounded-lg p-1.5 absolute right-[5%] top-[-40px] md:right-[13%] md:top-[-32px] lg:right-[24%] xl:right-[29%] ">
+              {averageSavings.toFixed(0)}% off
+            </span>
+            <TabsList className="bg-[#232b3e] grid w-full grid-cols-2 max-w-[400px] mx-auto my-10 h-fit rounded-full overflow-hidden">
+              <TabsTrigger
+                value="monthly"
+                onClick={() => setBillingPeriod("monthly")}
+                className="p-2 rounded-full data-[state=active]:bg-[#2F76FF] data-[state=active]:text-white transition-all duration-300 ease-in-out"
+              >
+                Monthly
+              </TabsTrigger>
+              <TabsTrigger
+                value="annual"
+                onClick={() => setBillingPeriod("annual")}
+                className="p-2 rounded-full data-[state=active]:bg-[#2F76FF] data-[state=active]:text-white transition-all duration-300 ease-in-out"
+              >
+                Yearly
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="monthly">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {tiers.map((tier, index) => (
+                  <motion.div
+                    key={tier.name}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <PricingCard
+                      tier={tier}
+                      originalPrice={tier.monthlyPrice.original}
+                      price={tier.monthlyPrice.discounted}
+                      billingPeriod="month"
+                      onSubscribe={handleSubscribe}
+                      isLoading={isLoading}
+                      strikethrough={tier.monthlyPrice.strikethrough}
+                    />
+                  </motion.div>
+                ))}
+              </div>
+            </TabsContent>
+            <TabsContent value="annual">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {tiers.map((tier, index) => (
+                  <motion.div
+                    key={tier.name}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <PricingCard
+                      tier={tier}
+                      originalPrice={tier.annualPrice.original}
+                      price={tier.annualPrice.discounted}
+                      billingPeriod="year"
+                      onSubscribe={handleSubscribe}
+                      isLoading={isLoading}
+                      strikethrough={tier.annualPrice.strikethrough}
+                    />
+                  </motion.div>
+                ))}
+              </div>
+            </TabsContent>
+          </Tabs>
+        </motion.div>
         <div className="mb-16">
           <Card className="border-none rounded-[20px] bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] overflow-hidden shadow-xl">
             <CardContent className="p-10">

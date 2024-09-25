@@ -23,8 +23,16 @@ const stripePromise = loadStripe(
 
 interface Tier {
   name: string;
-  monthlyPrice: string;
-  annualPrice: string;
+  monthlyPrice: {
+    original: string;
+    discounted: string;
+    strikethrough: boolean;
+  };
+  annualPrice: {
+    original: string;
+    discounted: string;
+    strikethrough: boolean;
+  };
   description: string;
   features: string[];
   plan: string;
@@ -33,16 +41,32 @@ interface Tier {
 const tiers: Tier[] = [
   {
     name: "Free",
-    monthlyPrice: "$0",
-    annualPrice: "$0",
+    monthlyPrice: {
+      original: "$0",
+      discounted: "$0",
+      strikethrough: false,
+    },
+    annualPrice: {
+      original: "$0",
+      discounted: "$0",
+      strikethrough: false,
+    },
     description: "Essential AI coaching for individuals",
-    features: ["General AI Coach only, Usage limits"],
+    features: ["General AI Coach only", "Usage limits"],
     plan: "free",
   },
   {
     name: "Individual",
-    monthlyPrice: "$29.95",
-    annualPrice: "$285",
+    monthlyPrice: {
+      original: "$49.95",
+      discounted: "$29.95",
+      strikethrough: true,
+    },
+    annualPrice: {
+      original: "$445",
+      discounted: "$285",
+      strikethrough: true,
+    },
     description: "Advanced coaching for professionals",
     features: [
       "General AI Coach ",
@@ -54,8 +78,16 @@ const tiers: Tier[] = [
   },
   {
     name: "Team",
-    monthlyPrice: "$49.95",
-    annualPrice: "$445",
+    monthlyPrice: {
+      original: "$99.95",
+      discounted: "$49.95",
+      strikethrough: true,
+    },
+    annualPrice: {
+      original: "$895",
+      discounted: "$445",
+      strikethrough: true,
+    },
     description: "Comprehensive solution for teams",
     features: [
       "General AI Coach ",
@@ -67,8 +99,16 @@ const tiers: Tier[] = [
   },
   {
     name: "Organization",
-    monthlyPrice: "Contact us",
-    annualPrice: "Contact us",
+    monthlyPrice: {
+      original: "Contact us",
+      discounted: "Contact us",
+      strikethrough: false,
+    },
+    annualPrice: {
+      original: "Contact us",
+      discounted: "Contact us",
+      strikethrough: false,
+    },
     description: "Tailored solutions for organizations",
     features: [
       "Custom AI Coaches",
@@ -129,7 +169,7 @@ export default function PricingPage(): JSX.Element {
 
   return (
     <div className="min-h-screen bg-[#1a2035] text-white p-8">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold mb-4 text-center">
           AgentCoach.AI Pricing
         </h1>
@@ -160,10 +200,12 @@ export default function PricingPage(): JSX.Element {
                 <PricingCard
                   key={tier.name}
                   tier={tier}
-                  price={tier.monthlyPrice}
+                  originalPrice={tier.monthlyPrice.original}
+                  price={tier.monthlyPrice.discounted}
                   billingPeriod="month"
                   onSubscribe={handleSubscribe}
                   isLoading={isLoading}
+                  strikethrough={tier.monthlyPrice.strikethrough}
                 />
               ))}
             </div>
@@ -174,10 +216,12 @@ export default function PricingPage(): JSX.Element {
                 <PricingCard
                   key={tier.name}
                   tier={tier}
-                  price={tier.annualPrice}
+                  originalPrice={tier.annualPrice.original}
+                  price={tier.annualPrice.discounted}
                   billingPeriod="year"
                   onSubscribe={handleSubscribe}
                   isLoading={isLoading}
+                  strikethrough={tier.annualPrice.strikethrough}
                 />
               ))}
             </div>
@@ -242,18 +286,22 @@ export default function PricingPage(): JSX.Element {
 
 interface PricingCardProps {
   tier: Tier;
+  originalPrice: string;
   price: string;
   billingPeriod: string;
   onSubscribe: (plan: string) => Promise<void>;
   isLoading: boolean;
+  strikethrough: boolean;
 }
 
 function PricingCard({
   tier,
+  originalPrice,
   price,
   billingPeriod,
   onSubscribe,
   isLoading,
+  strikethrough,
 }: PricingCardProps) {
   return (
     <Card className="bg-[#232b3e] border-[#3a4358] flex flex-col text-white">
@@ -261,16 +309,25 @@ function PricingCard({
         <CardTitle className="text-2xl font-bold text-[#4a90e2]">
           {tier.name}
         </CardTitle>
-        <CardDescription className="text-gray-400">
+        <CardDescription className="text-gray-400 line-clamp-2">
           {tier.description}
         </CardDescription>
       </CardHeader>
       <CardContent>
         <p className="text-3xl font-bold mb-4">
-          {price}
-          {tier.plan !== "enterprise" && (
-            <span className="text-sm font-normal">/{billingPeriod}</span>
-          )}
+          <div>
+            <p>
+              {price}
+              {tier.plan !== "organization" && (
+                <span className="text-sm font-normal">/{billingPeriod}</span>
+              )}
+            </p>
+            {strikethrough && (
+              <span className="line-through text-xl font-extralight">
+                {originalPrice}
+              </span>
+            )}
+          </div>
         </p>
         <ul className="space-y-2">
           {tier.features.map((feature) => (

@@ -233,7 +233,7 @@ export default function PricingPage(): JSX.Element {
           Choose the perfect plan for your coaching needs
         </motion.p>
         <Tabs defaultValue="monthly" className="mb-12 relative">
-          <span className="bg-[#2F76FF] text-xs font-bold rounded-lg p-2 absolute right-[2%] top-[-40px] md:right-[20%] md:top-[-38px] lg:right-[26%] xl:right-[29%] ">
+          <span className="bg-[#2F76FF] text-xs font-bold rounded-lg p-2 absolute right-[5%] top-[-40px] md:right-[13%] md:top-[-32px] lg:right-[24%] xl:right-[29%] ">
             {averageSavings.toFixed(0)}% off
           </span>
           <TabsList className="bg-[#232b3e] grid w-full grid-cols-2 max-w-[400px] mx-auto my-10 h-fit rounded-full overflow-hidden">

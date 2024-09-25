@@ -98,7 +98,7 @@ export default function PricingPage(): JSX.Element {
     setIsLoading(true);
     try {
       const response = await fetch(
-        "http://localhost:3001/create-checkout-session",
+        `${process.env.NEXT_PUBLIC_STRIPE_API_URL}/create-checkout-session`,
         {
           method: "POST",
           headers: {

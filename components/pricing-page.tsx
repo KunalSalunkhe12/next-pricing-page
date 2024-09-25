@@ -10,11 +10,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-// import Image from "next/image";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CheckCircle2, Star } from "lucide-react";
 import { loadStripe } from "@stripe/stripe-js";
+import { motion } from "framer-motion";
 
 // Replace with your Stripe publishable key
 const stripePromise = loadStripe(
@@ -36,6 +36,7 @@ interface Tier {
   description: string;
   features: string[];
   plan: string;
+  popular?: boolean;
 }
 
 const tiers: Tier[] = [
@@ -75,6 +76,7 @@ const tiers: Tier[] = [
       "Single user access",
     ],
     plan: "individual",
+    popular: true,
   },
   {
     name: "Team",
@@ -168,77 +170,92 @@ export default function PricingPage(): JSX.Element {
   };
 
   return (
-    <div className="min-h-screen bg-[#1a2035] text-white p-8">
+    <div className="min-h-screen bg-gradient-to-b from-[#1a2035] to-[#2a3045] text-white p-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold mb-4 text-center">
+        <motion.h1
+          className="text-3xl font-bold mb-4 text-center"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           AgentCoach.AI Pricing
-        </h1>
-        <p className="text-xl text-center mb-12 text-gray-400">
+        </motion.h1>
+        <motion.p
+          className="text-xl text-center mb-12 text-gray-300"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
           Choose the perfect plan for your coaching needs
-        </p>
+        </motion.p>
 
         <Tabs defaultValue="monthly" className="mb-12">
-          <TabsList className="bg-[#232b3e] grid w-full grid-cols-2 max-w-[400px] mx-auto my-10 h-fit">
+          <TabsList className="bg-[#232b3e] grid w-full grid-cols-2 max-w-[400px] mx-auto my-10 h-fit rounded-full overflow-hidden">
             <TabsTrigger
               value="monthly"
               onClick={() => setBillingPeriod("monthly")}
-              className="p-2 data-[state=active]:bg-[#4a90e2] data-[state=active]:text-white"
+              className="p-2 data-[state=active]:bg-[#4a90e2] data-[state=active]:text-white transition-all duration-300 ease-in-out"
             >
-              Monthly Billing
+              Monthly
             </TabsTrigger>
             <TabsTrigger
               value="annual"
               onClick={() => setBillingPeriod("annual")}
-              className="p-2 data-[state=active]:bg-[#4a90e2] data-[state=active]:text-white"
+              className="p-2 data-[state=active]:bg-[#4a90e2] data-[state=active]:text-white transition-all duration-300 ease-in-out"
             >
-              Annual Billing
+              Yearly
             </TabsTrigger>
           </TabsList>
           <TabsContent value="monthly">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {tiers.map((tier) => (
-                <PricingCard
+              {tiers.map((tier, index) => (
+                <motion.div
                   key={tier.name}
-                  tier={tier}
-                  originalPrice={tier.monthlyPrice.original}
-                  price={tier.monthlyPrice.discounted}
-                  billingPeriod="month"
-                  onSubscribe={handleSubscribe}
-                  isLoading={isLoading}
-                  strikethrough={tier.monthlyPrice.strikethrough}
-                />
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <PricingCard
+                    tier={tier}
+                    originalPrice={tier.monthlyPrice.original}
+                    price={tier.monthlyPrice.discounted}
+                    billingPeriod="month"
+                    onSubscribe={handleSubscribe}
+                    isLoading={isLoading}
+                    strikethrough={tier.monthlyPrice.strikethrough}
+                  />
+                </motion.div>
               ))}
             </div>
           </TabsContent>
           <TabsContent value="annual">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {tiers.map((tier) => (
-                <PricingCard
+              {tiers.map((tier, index) => (
+                <motion.div
                   key={tier.name}
-                  tier={tier}
-                  originalPrice={tier.annualPrice.original}
-                  price={tier.annualPrice.discounted}
-                  billingPeriod="year"
-                  onSubscribe={handleSubscribe}
-                  isLoading={isLoading}
-                  strikethrough={tier.annualPrice.strikethrough}
-                />
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <PricingCard
+                    tier={tier}
+                    originalPrice={tier.annualPrice.original}
+                    price={tier.annualPrice.discounted}
+                    billingPeriod="year"
+                    onSubscribe={handleSubscribe}
+                    isLoading={isLoading}
+                    strikethrough={tier.annualPrice.strikethrough}
+                  />
+                </motion.div>
               ))}
             </div>
           </TabsContent>
         </Tabs>
         <div className="mb-16">
-          <Card className="bg-[#3a4358] border-0 overflow-hidden">
+          <Card className="bg-gradient-to-br from-[#3a4358] to-[#2a3045] border-0 overflow-hidden shadow-xl">
             <CardContent className="p-8">
               <div className="flex justify-center mb-4">
                 <div className="bg-white text-[#1a2035] px-3 py-1 rounded-full text-sm font-semibold flex items-center">
-                  {/* <Image
-                    src="/placeholder.svg?height=24&width=24"
-                    alt="High Performer"
-                    width={24}
-                    height={24}
-                    className="mr-2"
-                  /> */}
                   High Performer Spring 2023
                 </div>
               </div>
@@ -275,7 +292,10 @@ export default function PricingPage(): JSX.Element {
           <h2 className="text-3xl font-bold mb-4 text-center">
             Still Have Questions?
           </h2>
-          <Link href="/contact" className="text-[#4a90e2]">
+          <Link
+            href="/contact"
+            className="text-[#4a90e2] hover:underline transition-all duration-300 ease-in-out"
+          >
             Reach Out
           </Link>
         </div>
@@ -304,43 +324,54 @@ function PricingCard({
   strikethrough,
 }: PricingCardProps) {
   return (
-    <Card className="bg-[#232b3e] border-[#3a4358] flex flex-col text-white">
-      <CardHeader>
+    <Card
+      className={`bg-gradient-to-br from-[#232b3e] to-[#1a2035] border-[#3a4358] flex flex-col text-white shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:-translate-y-2 ${
+        tier.popular ? "ring-2 ring-[#4a90e2]" : ""
+      } h-full`}
+    >
+      <CardHeader className="flex-grow-0">
+        {tier.popular && (
+          <div className="absolute top-0 right-0 bg-[#4a90e2] text-white text-xs font-bold px-3 py-1 rounded-lg">
+            Popular
+          </div>
+        )}
         <CardTitle className="text-2xl font-bold text-[#4a90e2]">
           {tier.name}
         </CardTitle>
-        <CardDescription className="text-gray-400 line-clamp-2">
+        <CardDescription className="text-gray-400 line-clamp-2 h-12">
           {tier.description}
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <p className="text-3xl font-bold mb-4">
-          <div>
-            <p>
+      <CardContent className="flex-grow flex flex-col justify-between">
+        <div>
+          <p className="text-3xl font-bold mb-4">
+            <span className="flex items-baseline">
               {price}
               {tier.plan !== "organization" && (
-                <span className="text-sm font-normal">/{billingPeriod}</span>
+                <span className="text-sm font-normal ml-1">
+                  /{billingPeriod}
+                </span>
               )}
-            </p>
+            </span>
             {strikethrough && (
-              <span className="line-through text-xl font-extralight">
+              <span className="line-through text-xl font-extralight text-gray-500">
                 {originalPrice}
               </span>
             )}
-          </div>
-        </p>
-        <ul className="space-y-2">
-          {tier.features.map((feature) => (
-            <li key={feature} className="flex items-center">
-              <CheckCircle2 className="w-5 h-5 mr-2 text-[#4a90e2]" />
-              {feature}
-            </li>
-          ))}
-        </ul>
+          </p>
+          <ul className="space-y-2">
+            {tier.features.map((feature) => (
+              <li key={feature} className="flex items-center">
+                <CheckCircle2 className="w-5 h-5 mr-2 text-[#4a90e2] flex-shrink-0" />
+                <span className="text-gray-300 text-sm">{feature}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </CardContent>
       <CardFooter className="mt-auto">
         <Button
-          className="w-full bg-[#4a90e2] hover:bg-[#3a7bc8]"
+          className="w-full bg-[#4a90e2] hover:bg-[#3a7bc8] transition-all duration-300 ease-in-out transform hover:scale-105"
           onClick={() => onSubscribe(tier.plan)}
           disabled={isLoading}
         >

@@ -10,14 +10,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+// import Image from "next/image";
+import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CheckCircle2, XCircle } from "lucide-react";
+import { CheckCircle2, Star, XCircle } from "lucide-react";
 import { loadStripe } from "@stripe/stripe-js";
 
 // Replace with your Stripe publishable key
@@ -36,41 +32,41 @@ interface Tier {
 
 const tiers: Tier[] = [
   {
-    name: "Basic",
-    monthlyPrice: "$9.99",
-    annualPrice: "$95.90",
+    name: "Free",
+    monthlyPrice: "$0",
+    annualPrice: "$0",
     description: "Essential AI coaching for individuals",
-    features: ["1 AI Coach", "5 coaching sessions/month", "Basic reporting"],
-    plan: "basic",
+    features: ["General AI Coach only, Usage limits"],
+    plan: "free",
   },
   {
-    name: "Pro",
-    monthlyPrice: "$29.99",
-    annualPrice: "$287.90",
+    name: "Individual",
+    monthlyPrice: "$29.95",
+    annualPrice: "$285",
     description: "Advanced coaching for professionals",
     features: [
-      "3 AI Coaches",
-      "Unlimited sessions",
-      "Advanced analytics",
-      "Priority support",
+      "General AI Coach ",
+      "Access to all specialized coaches",
+      "No usage limits",
+      "Single user access",
     ],
-    plan: "pro",
+    plan: "individual",
   },
   {
-    name: "Business",
-    monthlyPrice: "$99.99",
-    annualPrice: "$959.90",
+    name: "Team",
+    monthlyPrice: "$49.95",
+    annualPrice: "$445",
     description: "Comprehensive solution for teams",
     features: [
-      "10 AI Coaches",
-      "Team collaboration features",
-      "Custom integrations",
-      "Dedicated success manager",
+      "General AI Coach ",
+      "Access to all specialized coaches",
+      "No usage limits",
+      "Access for upto 5 users",
     ],
-    plan: "business",
+    plan: "team",
   },
   {
-    name: "Enterprise",
+    name: "Organization",
     monthlyPrice: "Contact us",
     annualPrice: "Contact us",
     description: "Tailored solutions for organizations",
@@ -80,7 +76,7 @@ const tiers: Tier[] = [
       "API access",
       "Dedicated account manager",
     ],
-    plan: "enterprise",
+    plan: "organization",
   },
 ];
 
@@ -129,33 +125,16 @@ const featureComparison = [
   },
 ];
 
-const faqs = [
-  {
-    question: "What is AgentCoach.AI?",
-    answer:
-      "AgentCoach.AI is an advanced AI-powered coaching platform designed to help individuals and organizations improve their skills and performance through personalized AI coaching sessions.",
-  },
-  {
-    question: "How does the AI coaching work?",
-    answer:
-      "Our AI coaches use advanced natural language processing and machine learning algorithms to analyze your inputs, provide personalized feedback, and guide you through tailored coaching sessions to help you achieve your goals.",
-  },
-  {
-    question: "Can I switch plans later?",
-    answer:
-      "Yes, you can upgrade or downgrade your plan at any time. Changes will be reflected in your next billing cycle.",
-  },
-  {
-    question: "Is there a free trial available?",
-    answer:
-      "We offer a 7-day free trial for our Basic plan. You can experience the power of AI coaching without any commitment.",
-  },
-];
-
 export default function PricingPage(): JSX.Element {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [billingPeriod, setBillingPeriod] = useState<string>("monthly");
 
   const handleSubscribe = async (plan: string): Promise<void> => {
+    if (plan === "free") {
+      alert("Please sign up for the free plan directly from the app.");
+      return;
+    }
+
     if (plan === "enterprise") {
       alert("Please contact us to subscribe to the Enterprise plan.");
       return;
@@ -170,7 +149,7 @@ export default function PricingPage(): JSX.Element {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ plan }),
+          body: JSON.stringify({ plan, billingPeriod }),
         }
       );
 
@@ -207,12 +186,14 @@ export default function PricingPage(): JSX.Element {
           <TabsList className="bg-[#232b3e] grid w-full grid-cols-2 max-w-[400px] mx-auto my-10 h-fit">
             <TabsTrigger
               value="monthly"
+              onClick={() => setBillingPeriod("monthly")}
               className="p-2 data-[state=active]:bg-[#4a90e2] data-[state=active]:text-white"
             >
               Monthly Billing
             </TabsTrigger>
             <TabsTrigger
               value="annual"
+              onClick={() => setBillingPeriod("annual")}
               className="p-2 data-[state=active]:bg-[#4a90e2] data-[state=active]:text-white"
             >
               Annual Billing
@@ -284,24 +265,57 @@ export default function PricingPage(): JSX.Element {
             ))}
           </div>
         </div>
-        <div>
-          <h2 className="text-3xl font-bold mb-8 text-center">
-            Frequently Asked Questions
+        <div className="mb-16">
+          <Card className="bg-[#3a4358] border-0 overflow-hidden">
+            <CardContent className="p-8">
+              <div className="flex justify-center mb-4">
+                <div className="bg-white text-[#1a2035] px-3 py-1 rounded-full text-sm font-semibold flex items-center">
+                  {/* <Image
+                    src="/placeholder.svg?height=24&width=24"
+                    alt="High Performer"
+                    width={24}
+                    height={24}
+                    className="mr-2"
+                  /> */}
+                  High Performer Spring 2023
+                </div>
+              </div>
+              <div className="flex justify-center mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className="w-6 h-6 text-yellow-400 fill-current"
+                  />
+                ))}
+              </div>
+              <h3 className="text-2xl font-bold text-center mb-4 text-white">
+                &quot;Truly a game changer for documentation across all
+                functions&quot;
+              </h3>
+              <p className="text-center text-gray-300 mb-6 lg:w-1/2 mx-auto">
+                &quot;AgentCoach.AI is easy to use and powerful. Ever had a
+                situation where you need to schedule time with a colleague to
+                show them how to do something, but schedules don&apos;t align?
+                Make a quick AgentCoach.AI in these cases, creating can take as
+                little as a minute (seriously).&quot;
+              </p>
+              <div className="text-center mb-6">
+                <p className="font-semibold text-white">Chris Widner</p>
+                <p className="text-sm text-gray-400">
+                  Business Operations Automation Lead
+                </p>
+                <p className="text-sm text-gray-400">IDK</p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="mb-16 text-center">
+          <h2 className="text-3xl font-bold mb-4 text-center">
+            Still Have Questions?
           </h2>
-          <Accordion type="single" collapsible className="w-full">
-            {faqs.map((faq, index) => (
-              <AccordionItem
-                key={index}
-                value={`item-${index}`}
-                className="border-b border-[#3a4358]"
-              >
-                <AccordionTrigger className="text-left">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent>{faq.answer}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+          <Link href="/contact" className="text-[#4a90e2]">
+            Reach Out
+          </Link>
         </div>
       </div>
     </div>

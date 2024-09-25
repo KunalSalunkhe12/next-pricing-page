@@ -13,7 +13,7 @@ import {
 // import Image from "next/image";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CheckCircle2, Star, XCircle } from "lucide-react";
+import { CheckCircle2, Star } from "lucide-react";
 import { loadStripe } from "@stripe/stripe-js";
 
 // Replace with your Stripe publishable key
@@ -77,51 +77,6 @@ const tiers: Tier[] = [
       "Dedicated account manager",
     ],
     plan: "organization",
-  },
-];
-
-const featureComparison = [
-  {
-    feature: "Capture video based guides",
-    free: true,
-    pro: true,
-    business: true,
-    enterprise: true,
-  },
-  {
-    feature: "Drag-and-drop video editor",
-    free: false,
-    pro: true,
-    business: true,
-    enterprise: true,
-  },
-  {
-    feature: "Quick search",
-    free: true,
-    pro: true,
-    business: false,
-    enterprise: true,
-  },
-  {
-    feature: "Record voiceovers",
-    free: false,
-    pro: true,
-    business: true,
-    enterprise: true,
-  },
-  {
-    feature: "Motion and Transitions",
-    free: false,
-    pro: true,
-    business: true,
-    enterprise: true,
-  },
-  {
-    feature: "Auto Subtitles",
-    free: false,
-    pro: true,
-    business: false,
-    enterprise: true,
   },
 ];
 
@@ -228,43 +183,6 @@ export default function PricingPage(): JSX.Element {
             </div>
           </TabsContent>
         </Tabs>
-
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold mb-8 text-center">
-            Plans Comparison
-          </h2>
-          <div className="bg-[#232b3e] rounded-lg overflow-hidden">
-            <div className="grid grid-cols-5 gap-4 p-4 border-b border-[#3a4358]">
-              <div className="font-semibold">Feature</div>
-              <div className="font-semibold text-center">Free</div>
-              <div className="font-semibold text-center">Pro</div>
-              <div className="font-semibold text-center">Business</div>
-              <div className="font-semibold text-center">Enterprise</div>
-            </div>
-            {featureComparison.map((row, index) => (
-              <div
-                key={row.feature}
-                className={`grid grid-cols-5 gap-4 p-4 ${
-                  index % 2 === 0 ? "bg-[#2a3346]" : ""
-                }`}
-              >
-                <div>{row.feature}</div>
-                <div className="text-center flex justify-center items-center">
-                  {renderFeatureValue(row.free)}
-                </div>
-                <div className="text-center flex justify-center items-center">
-                  {renderFeatureValue(row.pro)}
-                </div>
-                <div className="text-center flex justify-center items-center">
-                  {renderFeatureValue(row.business)}
-                </div>
-                <div className="text-center flex justify-center items-center">
-                  {renderFeatureValue(row.enterprise)}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
         <div className="mb-16">
           <Card className="bg-[#3a4358] border-0 overflow-hidden">
             <CardContent className="p-8">
@@ -374,15 +292,4 @@ function PricingCard({
       </CardFooter>
     </Card>
   );
-}
-
-function renderFeatureValue(value: string | boolean) {
-  if (typeof value === "boolean") {
-    return value ? (
-      <CheckCircle2 className="text-green-500" />
-    ) : (
-      <XCircle className="text-red-500" />
-    );
-  }
-  return value;
 }

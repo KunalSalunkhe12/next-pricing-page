@@ -173,15 +173,15 @@ export default function PricingPage(): JSX.Element {
     <div className="min-h-screen bg-gradient-to-b from-[#1a2035] to-[#2a3045] text-white p-8">
       <div className="max-w-7xl mx-auto">
         <motion.h1
-          className="text-3xl font-bold mb-4 text-center"
+          className="text-3xl font-bold mb-2 text-center"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          AgentCoach.AI Pricing
+          AgentCoach.ai Pricing
         </motion.h1>
         <motion.p
-          className="text-xl text-center mb-12 text-gray-300"
+          className="text-xl text-center mb-12 text-gray-400 font-light"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -194,14 +194,14 @@ export default function PricingPage(): JSX.Element {
             <TabsTrigger
               value="monthly"
               onClick={() => setBillingPeriod("monthly")}
-              className="p-2 data-[state=active]:bg-[#4a90e2] data-[state=active]:text-white transition-all duration-300 ease-in-out"
+              className="p-2 rounded-full data-[state=active]:bg-[#4a90e2] data-[state=active]:text-white transition-all duration-300 ease-in-out"
             >
               Monthly
             </TabsTrigger>
             <TabsTrigger
               value="annual"
               onClick={() => setBillingPeriod("annual")}
-              className="p-2 data-[state=active]:bg-[#4a90e2] data-[state=active]:text-white transition-all duration-300 ease-in-out"
+              className="p-2 rounded-full data-[state=active]:bg-[#4a90e2] data-[state=active]:text-white transition-all duration-300 ease-in-out"
             >
               Yearly
             </TabsTrigger>
@@ -289,7 +289,7 @@ export default function PricingPage(): JSX.Element {
           </Card>
         </div>
         <div className="mb-16 text-center">
-          <h2 className="text-3xl font-bold mb-4 text-center">
+          <h2 className="text-3xl font-bold mb-2 text-center">
             Still Have Questions?
           </h2>
           <Link
@@ -331,7 +331,7 @@ function PricingCard({
     >
       <CardHeader className="flex-grow-0">
         {tier.popular && (
-          <div className="absolute top-0 right-0 bg-[#4a90e2] text-white text-xs font-bold px-3 py-1 rounded-lg">
+          <div className="absolute top-2 right-2 bg-[#4a90e2] text-white text-xs font-bold px-3 py-1 rounded-lg">
             Popular
           </div>
         )}
@@ -362,7 +362,11 @@ function PricingCard({
           <ul className="space-y-2">
             {tier.features.map((feature) => (
               <li key={feature} className="flex items-center">
-                <CheckCircle2 className="w-5 h-5 mr-2 text-[#4a90e2] flex-shrink-0" />
+                <CheckCircle2
+                  className={`w-5 h-5 mr-2 ${
+                    tier.plan === "free" ? "text-gray-400" : "text-[#4a90e2]"
+                  } flex-shrink-0`}
+                />
                 <span className="text-gray-300 text-sm">{feature}</span>
               </li>
             ))}

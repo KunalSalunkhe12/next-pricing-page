@@ -122,6 +122,50 @@ const tiers: Tier[] = [
   },
 ];
 
+function parsePrice(price: string): number {
+  return parseFloat(price.replace("$", ""));
+}
+
+function calculateSavingsPercentage(
+  monthlyPrice: number,
+  annualPrice: number
+): number {
+  const monthlyEquivalent = annualPrice / 12;
+  return (1 - monthlyEquivalent / monthlyPrice) * 100;
+}
+
+function getAverageSavings(tiers: Tier[]): number {
+  const individualTier = tiers.find((tier) => tier.plan === "individual");
+  const teamTier = tiers.find((tier) => tier.plan === "team");
+
+  if (!individualTier || !teamTier) {
+    throw new Error("Individual or Team plan not found");
+  }
+
+  const individualMonthlyPrice = parsePrice(
+    individualTier.monthlyPrice.discounted
+  );
+  const individualAnnualPrice = parsePrice(
+    individualTier.annualPrice.discounted
+  );
+
+  const teamMonthlyPrice = parsePrice(teamTier.monthlyPrice.discounted);
+  const teamAnnualPrice = parsePrice(teamTier.annualPrice.discounted);
+
+  const individualSavings = calculateSavingsPercentage(
+    individualMonthlyPrice,
+    individualAnnualPrice
+  );
+  const teamSavings = calculateSavingsPercentage(
+    teamMonthlyPrice,
+    teamAnnualPrice
+  );
+
+  return (individualSavings + teamSavings) / 2;
+}
+
+const averageSavings = getAverageSavings(tiers);
+
 export default function PricingPage(): JSX.Element {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [billingPeriod, setBillingPeriod] = useState<string>("monthly");
@@ -188,8 +232,10 @@ export default function PricingPage(): JSX.Element {
         >
           Choose the perfect plan for your coaching needs
         </motion.p>
-
-        <Tabs defaultValue="monthly" className="mb-12">
+        <Tabs defaultValue="monthly" className="mb-12 relative">
+          <span className="bg-[#2F76FF] text-xs font-bold rounded-lg p-2 absolute right-[2%] top-[-40px] md:right-[20%] md:top-[-38px] lg:right-[26%] xl:right-[29%] ">
+            {averageSavings.toFixed(0)}% off
+          </span>
           <TabsList className="bg-[#232b3e] grid w-full grid-cols-2 max-w-[400px] mx-auto my-10 h-fit rounded-full overflow-hidden">
             <TabsTrigger
               value="monthly"

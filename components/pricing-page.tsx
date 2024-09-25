@@ -170,7 +170,7 @@ export default function PricingPage(): JSX.Element {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#1a2035] to-[#2a3045] text-white p-8">
+    <div className="min-h-screen bg-[#0C0D1C] text-white p-8">
       <div className="max-w-7xl mx-auto">
         <motion.h1
           className="text-3xl font-bold mb-2 text-center"
@@ -194,14 +194,14 @@ export default function PricingPage(): JSX.Element {
             <TabsTrigger
               value="monthly"
               onClick={() => setBillingPeriod("monthly")}
-              className="p-2 rounded-full data-[state=active]:bg-[#4a90e2] data-[state=active]:text-white transition-all duration-300 ease-in-out"
+              className="p-2 rounded-full data-[state=active]:bg-[#2F76FF] data-[state=active]:text-white transition-all duration-300 ease-in-out"
             >
               Monthly
             </TabsTrigger>
             <TabsTrigger
               value="annual"
               onClick={() => setBillingPeriod("annual")}
-              className="p-2 rounded-full data-[state=active]:bg-[#4a90e2] data-[state=active]:text-white transition-all duration-300 ease-in-out"
+              className="p-2 rounded-full data-[state=active]:bg-[#2F76FF] data-[state=active]:text-white transition-all duration-300 ease-in-out"
             >
               Yearly
             </TabsTrigger>
@@ -252,8 +252,8 @@ export default function PricingPage(): JSX.Element {
           </TabsContent>
         </Tabs>
         <div className="mb-16">
-          <Card className="bg-gradient-to-br from-[#3a4358] to-[#2a3045] border-0 overflow-hidden shadow-xl">
-            <CardContent className="p-8">
+          <Card className="border-none rounded-[20px] bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] overflow-hidden shadow-xl">
+            <CardContent className="p-10">
               <div className="flex justify-center mb-4">
                 <div className="bg-white text-[#1a2035] px-3 py-1 rounded-full text-sm font-semibold flex items-center">
                   High Performer Spring 2023
@@ -278,7 +278,7 @@ export default function PricingPage(): JSX.Element {
                 Make a quick AgentCoach.AI in these cases, creating can take as
                 little as a minute (seriously).&quot;
               </p>
-              <div className="text-center mb-6">
+              <div className="text-center">
                 <p className="font-semibold text-white">Chris Widner</p>
                 <p className="text-sm text-gray-400">
                   Business Operations Automation Lead
@@ -294,7 +294,7 @@ export default function PricingPage(): JSX.Element {
           </h2>
           <Link
             href="/contact"
-            className="text-[#4a90e2] hover:underline transition-all duration-300 ease-in-out"
+            className="text-[#2F76FF] hover:underline transition-all duration-300 ease-in-out"
           >
             Reach Out
           </Link>
@@ -325,17 +325,22 @@ function PricingCard({
 }: PricingCardProps) {
   return (
     <Card
-      className={`bg-gradient-to-br from-[#232b3e] to-[#1a2035] border-[#3a4358] flex flex-col text-white shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:-translate-y-2 ${
-        tier.popular ? "ring-2 ring-[#4a90e2]" : ""
+      className={`rounded-[20px] bg-gradient-to-t from-[rgba(121,166,255,0.16)] to-[rgba(47,118,255,0.16)] backdrop-blur-[20px] flex flex-col text-white shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out transform hover:-translate-y-2 
+        ${tier.plan === "free" ? "border-none" : "border-[#79A6FF]"} ${
+        tier.popular && "border-[2px]"
       } h-full`}
     >
       <CardHeader className="flex-grow-0">
         {tier.popular && (
-          <div className="absolute top-2 right-2 bg-[#4a90e2] text-white text-xs font-bold px-3 py-1 rounded-lg">
+          <div className="absolute top-2 right-2 bg-[#2F76FF] text-white text-xs font-bold px-3 py-1 rounded-lg">
             Popular
           </div>
         )}
-        <CardTitle className="text-2xl font-bold text-[#4a90e2]">
+        <CardTitle
+          className={`text-2xl font-bold  ${
+            tier.plan === "free" ? "text-gray-400" : "text-[#2F76FF]"
+          }`}
+        >
           {tier.name}
         </CardTitle>
         <CardDescription className="text-gray-400 line-clamp-2 h-12">
@@ -364,7 +369,7 @@ function PricingCard({
               <li key={feature} className="flex items-center">
                 <CheckCircle2
                   className={`w-5 h-5 mr-2 ${
-                    tier.plan === "free" ? "text-gray-400" : "text-[#4a90e2]"
+                    tier.plan === "free" ? "text-gray-400" : "text-[#2F76FF]"
                   } flex-shrink-0`}
                 />
                 <span className="text-gray-300 text-sm">{feature}</span>
@@ -375,7 +380,10 @@ function PricingCard({
       </CardContent>
       <CardFooter className="mt-auto">
         <Button
-          className="w-full bg-[#4a90e2] hover:bg-[#3a7bc8] transition-all duration-300 ease-in-out transform hover:scale-105"
+          className={
+            "w-full hover:bg-[#3a7bc8] transition-all duration-300 ease-in-out transform hover:scale-105" +
+            `${tier.plan === "free" ? " bg-gray-400" : " bg-[#2F76FF]"}`
+          }
           onClick={() => onSubscribe(tier.plan)}
           disabled={isLoading}
         >
